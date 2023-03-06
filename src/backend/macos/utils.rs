@@ -32,11 +32,7 @@ pub fn run_on_main<R: Send, F: FnOnce() -> R + Send>(run: F) -> R {
         run()
     } else {
         let app = NSApplication::shared_application();
-        if app.is_running() {
-            let main = dispatch::Queue::main();
-            main.exec_sync(run)
-        } else {
-            panic!("You are running RFD in NonWindowed environment, it is impossible to spawn dialog from thread different than main in this env.");
-        }
+        let main = dispatch::Queue::main();
+        main.exec_sync(run)
     }
 }
